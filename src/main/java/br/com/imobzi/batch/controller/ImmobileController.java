@@ -1,10 +1,6 @@
 package br.com.imobzi.batch.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,23 +21,29 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.imobzi.batch.domain.ImmobileRequest;
 import br.com.imobzi.batch.domain.ImmobileResponse;
 import br.com.imobzi.batch.facade.OrchestratorService;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/immobile")
 @CrossOrigin
+@Slf4j
 public class ImmobileController {
 
 	@Autowired
 	private OrchestratorService orchestratorService;
 	
-	private final String filePath = ("./temp.xlsx"); 
+	private final String filePath = ("./tmp/temp.xlsx"); 
 
 	@CrossOrigin
 	@MessageMapping("/immobile")
 	@SendTo("/topic/immobile")
 	public ResponseEntity<List<ImmobileResponse>> processFiles(@RequestBody ImmobileRequest immobileRequest) throws Exception{
 		
-		File file = new File("./temp/temp.xlsx");
+		log.info("Buscando arquivo temp salvo.");
+		File file = new File(filePath);
+		
+		log.info("Arquivo " + file.getName() + " encontrado com sucesso!");
+		
 		List<ImmobileResponse> immobileResponse = this.orchestratorService.orchestrator(file, immobileRequest);
 		
 		file.delete();
@@ -57,9 +58,13 @@ public class ImmobileController {
 	public ResponseEntity<?> processFile(@RequestParam(value = "files") MultipartFile[] files) 
 			throws Exception {
 		
+		log.info("Arquivo recebido com sucesso.");
+		
 		List<ImmobileResponse> immobileResponse = new ArrayList<>();
 		for (final MultipartFile file : files) {
+			log.info("Salvando o arquivo recebido.");
 			file.transferTo(new File(filePath));
+			log.info("Arquivo salvo com sucesso.");
 		}
 		return new ResponseEntity(HttpStatus.CREATED);
 	}

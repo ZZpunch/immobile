@@ -49,10 +49,14 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 	@Override
 	public List<ImmobileResponse> orchestrator(final File inputStream, ImmobileRequest immobileRequest)
 			throws Exception {
+		
+		log.info("Metodo orchestrator chamado.");
+		
 		List<Excel> excelList = this.excelService.readList(inputStream, immobileRequest);
+		
 		List<Property> property = excelListToImmobile(excelList);
 
-//		List<String> addresses = imobziService.getAllCreatedAddresses();
+		List<String> addresses = imobziService.getAllCreatedAddresses();
 
 		List<ImmobileResponse> immobileResponses = new ArrayList<ImmobileResponse>();
 		callAmount = 0;
@@ -135,6 +139,9 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 	}
 
 	private List<Property> excelListToImmobile(List<Excel> execelList) {
+		
+		log.info("Convertendo para lista de propriedades.");
+		
 		List<Property> property = execelList.parallelStream()
 				.map(excel -> new Property(new Immobile().withActive(Boolean.TRUE).withStatus(excel.getStatus())
 						.withAddress(excel.getAddress()).withAddressCompl(excel.getAddress_complement())
@@ -155,6 +162,9 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 
 						.withLinks(ImmobileConverter.withLinks(excel.getCaptador()))))
 				.collect(Collectors.toList());
+		
+		log.info("Excell convertido com sucesso para lista de propriedades.");
+		
 		return property;
 	}
 

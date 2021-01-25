@@ -92,6 +92,9 @@ public class ImobziServiceImpl implements ImobziService {
 	
 	@Override
 	public List<String> getAllCreatedAddresses() throws InterruptedException{
+		
+		log.info("Buscando todos os endereços cadastrados.");
+		
 		int callAmount=0;
 		long start= System.currentTimeMillis();
 		long finish;
@@ -133,11 +136,11 @@ public class ImobziServiceImpl implements ImobziService {
 					callAmount=0;
 				}
 			}while(cursor != null);
+			log.info("Endereços cadastrados obtidos com sucesso.");
 			return addresses;
 		} catch (HttpStatusCodeException e) {
-			genericErrorHttpExceptions(e, "");
+			throw e;
 		}
-		return null;
 	}
 
 	@Override

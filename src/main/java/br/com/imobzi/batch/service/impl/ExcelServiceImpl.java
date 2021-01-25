@@ -31,6 +31,9 @@ public class ExcelServiceImpl implements ExcelService {
 	}
 
 	public List<Excel> parseXlsxToImmobileList(File file, ImmobileRequest immobileRequest) throws Exception {
+		
+		log.info("Efetuando Parse do XLSX para Immobile List.");
+		
 		List<Excel> excelList = new ArrayList<>();
 		log.info("opening excel information");
 		String lowerCaseFileName = file.getName().toLowerCase();
