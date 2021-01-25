@@ -42,7 +42,7 @@ public class ImmobileController {
 	@SendTo("/topic/immobile")
 	public ResponseEntity<List<ImmobileResponse>> processFiles(@RequestBody ImmobileRequest immobileRequest) throws Exception{
 		
-		File file = new File(filePath);
+		File file = new File("./temp/temp.xlsx");
 		List<ImmobileResponse> immobileResponse = this.orchestratorService.orchestrator(file, immobileRequest);
 		
 		file.delete();
