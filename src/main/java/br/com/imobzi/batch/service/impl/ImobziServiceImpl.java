@@ -84,8 +84,10 @@ public class ImobziServiceImpl implements ImobziService {
 			
 			immobileContacts= immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			throw e;
-		}
+			throw new BadRequestException("Ocorreu um erro ao buscar o Owner com o email " + email + " no endereço " 
+					+ address + ". Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
+							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());		
+			}
 		return immobileContacts;
 	}
 
@@ -143,7 +145,8 @@ public class ImobziServiceImpl implements ImobziService {
 			TimeUnit.SECONDS.sleep(60-total+1);
 			return addresses;
 		} catch (HttpStatusCodeException e) {
-			throw e;
+			throw new BadRequestException("Ocorreu um erro ao buscar todos os endereços cadastrados. Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
+							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());	
 		}
 	}
 
@@ -165,7 +168,9 @@ public class ImobziServiceImpl implements ImobziService {
 					HttpMethod.POST, httpEntity, ImmobileResponse.class);
 			immobileResponse = immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			throw e;
+			throw new BadRequestException("Ocorreu um erro ao cadastrar a foto do endereço " 
+					+ immobile.getProperty().getAddress() + ". Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
+							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());
 		}
 		return immobileResponse;
 	}
@@ -217,7 +222,9 @@ public class ImobziServiceImpl implements ImobziService {
 		} catch (HttpStatusCodeException e) {
 			File file = new File("photo");
 			file.delete();
-			throw e;
+			throw new BadRequestException("Ocorreu um erro ao inserir a foto como capa do endereço " 
+					+ immobile.getProperty().getAddress() + ". Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
+							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());
 		}
 		log.info("Foto inserida com sucesso.");
 		return immobilePhotoResponse;
@@ -240,19 +247,10 @@ public class ImobziServiceImpl implements ImobziService {
 					HttpMethod.POST, httpEntity, ImmobileResponse.class);
 			immobileResponse = immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			throw e;
+			throw new BadRequestException("Ocorreu um erro ao cadastrar o endereço " 
+					+ immobile.getProperty().getAddress() + ". Por favor valide o checklist. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
+							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());
 		}
 		return immobileResponse;
-	}
-
-	private GenericError genericErrorHttpExceptions(HttpStatusCodeException ex, String address) {
-		if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
-			throw new ForbiddenException("Empreendimento já utilizado " + "o qual refere-se a esse Endereço: '" + address
-					+ "', por gentileza " + "revisar a planilha");
-		} else if (ex.getStatusCode() == HttpStatus.BAD_REQUEST) {
-			throw new BadRequestException(new JSONObject(ex.getMessage()
-					.substring(18,ex.getMessage().length()-1)).getString("message") + ", no endereço: " + address);
-		}
-		throw new ForbiddenException("");
 	}
 }

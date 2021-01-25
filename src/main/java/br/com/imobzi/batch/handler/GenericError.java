@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericError {
-    private String code;
+public class GenericError extends RuntimeException{
+	private static final long serialVersionUID = 1L;
+	private String code;
     private String message;
     private String level;
     private String description;

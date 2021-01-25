@@ -37,7 +37,7 @@ public class ImmobileController {
 	@CrossOrigin
 	@MessageMapping("/immobile")
 	@SendTo("/topic/immobile")
-	public ResponseEntity<List<ImmobileResponse>> processFiles(@RequestBody ImmobileRequest immobileRequest) throws Exception{
+	public ResponseEntity<String> processFiles(@RequestBody ImmobileRequest immobileRequest) throws Exception{
 		
 		log.info("Buscando arquivo temp salvo.");
 		File file = new File(filePath);
@@ -46,9 +46,11 @@ public class ImmobileController {
 		
 		List<ImmobileResponse> immobileResponse = this.orchestratorService.orchestrator(file, immobileRequest);
 		
+		log.info("Deletando arquivo temporario.");
 		file.delete();
+		log.info("Arquivo temporario deletado com sucesso!");
 		
-		return new ResponseEntity<List<ImmobileResponse>>(immobileResponse, HttpStatus.CREATED);
+		return new ResponseEntity<String>("sucesso", HttpStatus.CREATED);
 	}
 	
 	

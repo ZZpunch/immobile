@@ -60,6 +60,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 
 		List<ImmobileResponse> immobileResponses = new ArrayList<ImmobileResponse>();
 		callAmount = 0;
+		TimeUnit.SECONDS.sleep(60);
 		start = System.currentTimeMillis();
 		property.forEach(immobile -> {
 			String addressToTest = immobile.getProperty().getAddress() + " "
@@ -111,6 +112,8 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 					}
 				} catch (IOException | InterruptedException e) {
 					log.error(e.getMessage());
+					throw new BadRequestException("Ocorreu um erro ao cadastrar o endereço " 
+					+ addressToTest + ". Por favor valide o checklist.");
 				}
 			} else {
 				log.error("Endereço " + addressToTest + "já está cadastrado!");
@@ -166,17 +169,5 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 		log.info("Excell convertido com sucesso para lista de propriedades.");
 		
 		return property;
-	}
-
-	private GenericError genericErrorHttpExceptions(HttpStatusCodeException ex, String address) {
-		if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
-			throw new ForbiddenException("Empreendimento já utilizado " + "o qual refere-se a esse Endereço: '"
-					+ address + "', por gentileza " + "revisar a planilha");
-		} else if (ex.getStatusCode() == HttpStatus.BAD_REQUEST) {
-			throw new BadRequestException(
-					new JSONObject(ex.getMessage().substring(18, ex.getMessage().length() - 1)).getString("message")
-							+ ", no endereço: " + address);
-		}
-		throw new ForbiddenException("");
 	}
 }
