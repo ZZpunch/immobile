@@ -32,7 +32,7 @@ public class ImmobileController {
 	@Autowired
 	private OrchestratorService orchestratorService;
 	
-	private final String filePath = ("./tmp/temp.xlsx"); 
+	private final String filePath = ("/tmp/temp.xlsx"); 
 
 	@CrossOrigin
 	@MessageMapping("/immobile")
