@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExceptionResponseBody {
+public class ResponseBodyDefaut {
 	
 	private boolean status;
 	private String message;
