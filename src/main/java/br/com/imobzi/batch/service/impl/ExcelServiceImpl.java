@@ -1,5 +1,6 @@
 package br.com.imobzi.batch.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,20 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExcelServiceImpl implements ExcelService {
 	@Override
-	public List<Excel> readList(final MultipartFile inputStream, ImmobileRequest immobileRequest) throws Exception {
+	public List<Excel> readList(final File inputStream, ImmobileRequest immobileRequest) throws Exception {
 		return parseXlsxToImmobileList(inputStream, immobileRequest);
 	}
 
-	public List<Excel> parseXlsxToImmobileList(MultipartFile file, ImmobileRequest immobileRequest) throws Exception {
+	public List<Excel> parseXlsxToImmobileList(File file, ImmobileRequest immobileRequest) throws Exception {
 		List<Excel> excelList = new ArrayList<>();
 		log.info("opening excel information");
-		Workbook workbook;
-		String lowerCaseFileName = file.getOriginalFilename().toLowerCase();
-		if (lowerCaseFileName.endsWith(".xlsx")) {
-			workbook = new XSSFWorkbook(file.getInputStream());
-		} else {
-			workbook = new HSSFWorkbook(file.getInputStream());
-		}
+		String lowerCaseFileName = file.getName().toLowerCase();
+		Workbook workbook = new XSSFWorkbook(file);
+
 		Sheet sheet = workbook.getSheetAt(0);
 		List<Row> rows = (List<Row>) toList(sheet.iterator());
 		rows.remove(0);

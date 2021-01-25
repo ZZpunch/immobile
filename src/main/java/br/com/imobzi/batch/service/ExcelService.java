@@ -1,11 +1,11 @@
 package br.com.imobzi.batch.service;
 
-import br.com.imobzi.batch.domain.Excel;
-import br.com.imobzi.batch.domain.ImmobileRequest;
-import org.springframework.web.multipart.MultipartFile;
-
+import java.io.File;
 import java.util.List;
 
+import br.com.imobzi.batch.domain.Excel;
+import br.com.imobzi.batch.domain.ImmobileRequest;
+
 public interface ExcelService {
-    List<Excel> readList(final MultipartFile inputStream, ImmobileRequest immobileRequest) throws Exception;
+    List<Excel> readList(final File inputStream, ImmobileRequest immobileRequest) throws Exception;
 }
