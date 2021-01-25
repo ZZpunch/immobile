@@ -84,7 +84,7 @@ public class ImobziServiceImpl implements ImobziService {
 			
 			immobileContacts= immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			genericErrorHttpExceptions(e, address);
+			throw e;
 		}
 		return immobileContacts;
 	}
@@ -137,6 +137,10 @@ public class ImobziServiceImpl implements ImobziService {
 				}
 			}while(cursor != null);
 			log.info("Endereços cadastrados obtidos com sucesso.");
+			
+			finish = System.currentTimeMillis();
+			total = (finish - start)/1000;
+			TimeUnit.SECONDS.sleep(60-total+1);
 			return addresses;
 		} catch (HttpStatusCodeException e) {
 			throw e;
@@ -161,13 +165,16 @@ public class ImobziServiceImpl implements ImobziService {
 					HttpMethod.POST, httpEntity, ImmobileResponse.class);
 			immobileResponse = immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			genericErrorHttpExceptions(e, immobile.getProperty().getAddress());
+			throw e;
 		}
 		return immobileResponse;
 	}
 
 	@Override
 	public ImmobilePhotoResponse postPhoto(Property immobile, String propertyId) throws IOException {
+		
+		log.info("Metodo postPhoto chamado.");
+		
 		ImmobilePhotoResponse immobilePhotoResponse = new ImmobilePhotoResponse();
 		try {
 
@@ -210,8 +217,9 @@ public class ImobziServiceImpl implements ImobziService {
 		} catch (HttpStatusCodeException e) {
 			File file = new File("photo");
 			file.delete();
-			genericErrorHttpExceptions(e, immobile.getProperty().getAddress());
+			throw e;
 		}
+		log.info("Foto inserida com sucesso.");
 		return immobilePhotoResponse;
 
 	}
@@ -232,7 +240,7 @@ public class ImobziServiceImpl implements ImobziService {
 					HttpMethod.POST, httpEntity, ImmobileResponse.class);
 			immobileResponse = immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			genericErrorHttpExceptions(e, immobile.getProperty().getAddress());
+			throw e;
 		}
 		return immobileResponse;
 	}

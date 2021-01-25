@@ -80,7 +80,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 			} else {
 				throw new BadRequestException("Contato " + immobile.getProperty().getOwnerEmail() + "não encontrato.");
 			}
-//			if (!addresses.contains(addressToTest)) {
+			if (!addresses.contains(addressToTest)) {
 				try {
 					ImmobileResponse atualResponse = this.imobziService.postImmobile(immobile);
 					callAmount++;
@@ -112,9 +112,9 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 				} catch (IOException | InterruptedException e) {
 					log.error(e.getMessage());
 				}
-//			} else {
-//				log.info("Endereço " + addressToTest + "já está cadastrado!");
-//			}
+			} else {
+				log.error("Endereço " + addressToTest + "já está cadastrado!");
+			}
 		});
 		return immobileResponses;
 	}
