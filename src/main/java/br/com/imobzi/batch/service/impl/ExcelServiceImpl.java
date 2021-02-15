@@ -71,9 +71,9 @@ public class ExcelServiceImpl implements ExcelService {
 							.bathroom((int) cells.get(13).getNumericCellValue())
 							.garage((int) cells.get(14).getNumericCellValue())
 							.useful_area((int) cells.get(15).getNumericCellValue())
-							.lot_area((int) cells.get(16).getNumericCellValue())
-							.area((int) cells.get(17).getNumericCellValue())
-							.description(ExcelValidation.validDescription(immobileRequest.getDescription(),
+							.area((int) cells.get(16).getNumericCellValue())
+							.lot_area((int) cells.get(17).getNumericCellValue())
+							.description(ExcelValidation.formatTextWithAllColumns(immobileRequest.getDescription(),
 									cells.get(0).getStringCellValue(), cells.get(1).getStringCellValue(),
 									cells.get(2).getStringCellValue(), cells.get(3).getStringCellValue(),
 									cells.get(4).getStringCellValue(), (int) cells.get(5).getNumericCellValue(),
@@ -99,7 +99,24 @@ public class ExcelServiceImpl implements ExcelService {
 							.photos(cells.get(25).getStringCellValue()).multimidias(cells.get(26).getStringCellValue())
 							.avaliation_value(cells.get(27).getNumericCellValue())
 							.discount(cells.get(28).getNumericCellValue()).status("available")
-							.tittle(immobileRequest.getTitle()).build();
+							.tittle(ExcelValidation.formatTextWithAllColumns(immobileRequest.getTitle(),
+									cells.get(0).getStringCellValue(), cells.get(1).getStringCellValue(),
+									cells.get(2).getStringCellValue(), cells.get(3).getStringCellValue(),
+									cells.get(4).getStringCellValue(), (int) cells.get(5).getNumericCellValue(),
+									cells.get(6).getStringCellValue(), cells.get(7).getStringCellValue(),
+									cells.get(8).getStringCellValue(), cells.get(9).getStringCellValue(),
+									cells.get(10).getStringCellValue(), (int) cells.get(11).getNumericCellValue(),
+									(int) cells.get(12).getNumericCellValue(),
+									(int) cells.get(13).getNumericCellValue(),
+									(int) cells.get(14).getNumericCellValue(),
+									(int) cells.get(15).getNumericCellValue(),
+									(int) cells.get(16).getNumericCellValue(),
+									(int) cells.get(17).getNumericCellValue(), cells.get(18).getStringCellValue(),
+									cells.get(19).getNumericCellValue(), cells.get(20).getNumericCellValue(),
+									cells.get(21).getNumericCellValue(), (int) cells.get(22).getNumericCellValue(),
+									cells.get(23).getStringCellValue(), cells.get(24).getStringCellValue(),
+									cells.get(25).getStringCellValue(), cells.get(26).getStringCellValue(),
+									cells.get(27).getNumericCellValue(), cells.get(28).getNumericCellValue())).build();
 					excelList.add(excel);
 				} catch (RuntimeException e) {
 					throw new BadRequestException("Erro na execução da planilha, planilha não enviada."

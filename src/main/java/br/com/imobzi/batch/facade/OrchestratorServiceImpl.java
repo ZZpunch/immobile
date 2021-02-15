@@ -57,10 +57,11 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 		List<Property> property = excelListToImmobile(excelList);
 
 		List<String> addresses = imobziService.getAllCreatedAddresses();
+		// MOCK
+//		List<String> addresses = new ArrayList<>();
 
 		List<ImmobileResponse> immobileResponses = new ArrayList<ImmobileResponse>();
 		callAmount = 0;
-		TimeUnit.SECONDS.sleep(60);
 		start = System.currentTimeMillis();
 		property.forEach(immobile -> {
 			String addressToTest = immobile.getProperty().getAddress() + " "
@@ -153,17 +154,19 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 						.withUsefulArea(excel.getUseful_area()).withLotArea(excel.getLot_area())
 						.withArea(excel.getArea()).withDescriptions(excel.getDescription())
 						.withSaleValue(excel.getSale_value()).withRentalValue(excel.getRental_value())
-						.withBuilt(excel.getBuilt()).withNeighborhood(excel.getNeighborhood()).withCity(excel.getCity())
+						.withNeighborhood(excel.getNeighborhood()).withCity(excel.getCity())
 						.withState(excel.getState()).withZipcode(excel.getZipcode()).withCountry(excel.getCountry())
 						.withFinality(excel.getFinality()).withPropertyType(excel.getProperty_type())
 						.withBuildingName(excel.getBuilding_name()).withBuilding(excel.getBuilding())
 						.withOwnerEmail(excel.getOwners()).withPhotos(ImmobileConverter.withPhotos(excel.getPhotos()))
 						.withMultimidias(ImmobileConverter.withMultimidias(excel.getMultimidias()))
 						.withSiteTitle(excel.getTittle())
+						.withSiteDescriptions(excel.getDescription())
 						.withSiteUrl(ImmobileConverter.withUrls(excel.getProperty_type(), excel.getBedroom(),
 								excel.getNeighborhood(), excel.getCity(), excel.getState()))
 
-						.withLinks(ImmobileConverter.withLinks(excel.getCaptador()))))
+						.withLinks(ImmobileConverter.withLinks(excel.getCaptador()))
+						.withFieldValues(excel.getBuilt(), excel.getIptu())))
 				.collect(Collectors.toList());
 		
 		log.info("Excell convertido com sucesso para lista de propriedades.");

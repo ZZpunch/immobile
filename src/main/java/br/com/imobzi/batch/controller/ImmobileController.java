@@ -56,6 +56,27 @@ public class ImmobileController {
 				ResponseBodyDefaut.builder().status(true).message("Dados inseridos com sucesso!").build(),
 				HttpStatus.CREATED);
 	}
+	
+	@PostMapping("/test")
+	public ResponseEntity<ResponseBodyDefaut> teste(@RequestBody ImmobileRequest immobileRequest)
+			throws Exception {
+
+		log.info("Buscando arquivo temp salvo.");
+		File file = new File(filePath);
+
+		log.info("Arquivo " + file.getName() + " encontrado com sucesso!");
+
+		List<ImmobileResponse> immobileResponse = this.orchestratorService.orchestrator(file, immobileRequest);
+
+		log.info("Deletando arquivo temporario.");
+		file.delete();
+		log.info("Arquivo temporario deletado com sucesso!");
+
+		return new ResponseEntity<ResponseBodyDefaut>(
+				ResponseBodyDefaut.builder().status(true).message("Dados inseridos com sucesso!").build(),
+				HttpStatus.CREATED);
+	}
+	
 
 	@CrossOrigin
 	@PostMapping(path = "/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

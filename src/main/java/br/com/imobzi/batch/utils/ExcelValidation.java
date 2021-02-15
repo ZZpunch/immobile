@@ -195,7 +195,7 @@ public class ExcelValidation {
     	return cell.getStringCellValue();
     }
 
-    public static String validDescription(String description,
+    public static String formatTextWithAllColumns(String text,
                                           String address,
                                           String addressComplement,
                                           String neighborhood,
@@ -226,14 +226,14 @@ public class ExcelValidation {
                                           Double avaliation_value,
                                           Double discount) {
 
-        if (!ObjectUtils.isEmpty(description)) {
-            String descriptionFinal = MessageFormat
-                    .format(description, address,addressComplement,neighborhood,city,
+        if (!ObjectUtils.isEmpty(text)) {
+            String textFinal = MessageFormat
+                    .format(text, address,addressComplement,neighborhood,city,
                             state,zipcode,country,finality,propertyType,buildingName,
                             alternativeCode,bedroom,suite,bathroom,garage,usefulArea,
                             lotArea,area,descriptionExcel,saleValue,rentalValue,iptu,built,owners,captador,
                             photos,multimidias,avaliation_value,discount);
-            return descriptionFinal;
+            return textFinal;
         }
         return descriptionExcel;
     }

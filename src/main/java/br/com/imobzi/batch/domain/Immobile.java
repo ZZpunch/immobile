@@ -1,6 +1,7 @@
 package br.com.imobzi.batch.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -71,6 +72,20 @@ public class Immobile implements Serializable {
     private String with_plaque;
     private String zipcode;
     private List<Links> links;
+    
+    public Immobile withFieldValues(Integer condominium, Double iptu) {
+    	List<FieldValues> fieldValuesList = new ArrayList<FieldValues>();
+    	fieldValuesList.add(FieldValues.builder()
+    			.field_id("condominium")
+    			.value(condominium)
+    			.build());
+    	fieldValuesList.add(FieldValues.builder()
+    			.field_id("iptu")
+    			.value(iptu.intValue())
+    			.build());
+    	this.field_values = fieldValuesList;
+    	return this;
+    }
     
     public Immobile withOwnerEmail(String email) {
     	this.ownerEmail = email;
@@ -169,10 +184,6 @@ public class Immobile implements Serializable {
         this.rental_value = rentalValue;
         return this;
     }
-    public Immobile withBuilt(Integer built){
-        this.built = built;
-        return this;
-    }
     public Immobile withPhotos(List<Photos> photos){
         this.photos = photos;
         return this;
@@ -190,6 +201,11 @@ public class Immobile implements Serializable {
         this.site_url = url;
         this.site_publish=true;
         this.site_publish_price=true;
+        return this;
+    }
+    
+    public Immobile withSiteDescriptions(String description){
+        this.site_description = description;
         return this;
     }
     public Immobile withSiteTitle(String title){

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FieldValues {
     private String field_id;
-    private Boolean value;
+    private Integer value;
 }
