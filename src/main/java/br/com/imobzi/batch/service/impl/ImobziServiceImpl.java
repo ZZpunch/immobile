@@ -168,7 +168,7 @@ public class ImobziServiceImpl implements ImobziService {
 					HttpMethod.POST, httpEntity, ImmobileResponse.class);
 			immobileResponse = immobileResponseResponseEntity.getBody();
 		} catch (HttpStatusCodeException e) {
-			throw new BadRequestException("Ocorreu um erro ao cadastrar a foto do endereço " 
+			log.error("Ocorreu um erro ao cadastrar a foto do endereço " 
 					+ immobile.getProperty().getAddress() + ". Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
 							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());
 		}
@@ -222,9 +222,10 @@ public class ImobziServiceImpl implements ImobziService {
 		} catch (HttpStatusCodeException e) {
 			File file = new File("photo");
 			file.delete();
-			throw new BadRequestException("Ocorreu um erro ao inserir a foto como capa do endereço " 
+			log.error("Ocorreu um erro ao inserir a foto como capa do endereço " 
 					+ immobile.getProperty().getAddress() + ". Por favor tente novamente. \nCaso o erro continue, envie a seguinte mensagem para o desenvolvedor: "
 							+ e.getMessage() + ". Status code: " + e.getRawStatusCode());
+			return null;
 		}
 		log.info("Foto inserida com sucesso.");
 		return immobilePhotoResponse;

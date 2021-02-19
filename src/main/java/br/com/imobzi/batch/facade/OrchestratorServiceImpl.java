@@ -92,10 +92,12 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 							ImmobilePhotoResponse photoResponse = this.imobziService.postPhoto(immobile, atualResponse.getDb_id());
 							callAmount++;
 
-							this.imobziService.postCoverPhotoImmobile(
-									this.generateSetCoverPhotoImmobile(photoResponse, immobile.getProperty()),
-									atualResponse.getDb_id());
-							callAmount++;
+							if(photoResponse != null) {
+								this.imobziService.postCoverPhotoImmobile(
+										this.generateSetCoverPhotoImmobile(photoResponse, immobile.getProperty()),
+										atualResponse.getDb_id());
+								callAmount++;								
+							}
 
 							atualResponse.setImmobilePhotoResponse(photoResponse);
 						}
