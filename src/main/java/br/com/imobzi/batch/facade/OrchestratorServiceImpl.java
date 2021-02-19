@@ -161,7 +161,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 						.withOwnerEmail(excel.getOwners()).withPhotos(ImmobileConverter.withPhotos(excel.getPhotos()))
 						.withMultimidias(ImmobileConverter.withMultimidias(excel.getMultimidias()))
 						.withSiteTitle(excel.getTittle())
-						.withSiteDescriptions(excel.getDescription())
+						.withSiteDescriptions(this.prepareSiteDescription(excel.getDescription()))
 						.withSiteUrl(ImmobileConverter.withUrls(excel.getProperty_type(), excel.getBedroom(),
 								excel.getNeighborhood(), excel.getCity(), excel.getState()))
 
@@ -172,5 +172,10 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 		log.info("Excell convertido com sucesso para lista de propriedades.");
 		
 		return property;
+	}
+
+	private String prepareSiteDescription(String description) {
+		String site_description = description.replaceAll(System.lineSeparator(),"<div><br></div>");
+		return site_description;
 	}
 }
